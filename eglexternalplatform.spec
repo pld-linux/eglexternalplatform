@@ -1,17 +1,13 @@
 Summary:	EGL External Platform Interface
 Summary(pl.UTF-8):	Interfejs EGL External Platform
 Name:		eglexternalplatform
-# see interface/eglexternalplatformversion.h
-Version:	1.0.0
-%define	gitref	e3b182e3253f92bdbb03a71fdbd958bfb69cf3e3
-%define	snap	20180316
-Release:	0.%{snap}.1
+Version:	1.1
+Release:	1
 License:	MIT
 Group:		Development/Libraries
 #Source0Download: https://github.com/NVIDIA/eglexternalplatform/releases
-# ...but no releases yet, so use snapshot
-Source0:	https://github.com/NVIDIA/eglexternalplatform/archive/%{gitref}/%{name}-%{snap}.tar.gz
-# Source0-md5:	fc3aa30a0351acbb790a2d2428369c28
+Source0:	https://github.com/NVIDIA/eglexternalplatform/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	ca1c152789955332cf315a9934742be2
 URL:		https://github.com/NVIDIA/eglexternalplatform
 BuildRequires:	rpmbuild(macros) >= 1.446
 Requires:	EGL-devel
@@ -40,7 +36,7 @@ Przykładami niskopoziomowych platform EGL są EGL_EXT_platform_device
 czy EGL_KHR_platform_gbm.
 
 %prep
-%setup -q -n %{name}-%{gitref}
+%setup -q
 
 %install
 rm -rf $RPM_BUILD_ROOT
