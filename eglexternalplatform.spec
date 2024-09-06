@@ -1,15 +1,18 @@
 Summary:	EGL External Platform Interface
 Summary(pl.UTF-8):	Interfejs EGL External Platform
 Name:		eglexternalplatform
-Version:	1.1
+Version:	1.2
 Release:	1
 License:	MIT
 Group:		Development/Libraries
 #Source0Download: https://github.com/NVIDIA/eglexternalplatform/releases
 Source0:	https://github.com/NVIDIA/eglexternalplatform/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	ca1c152789955332cf315a9934742be2
+# Source0-md5:	ad353dea7891a494986ff50a7e7f4b87
+Patch0:		%{name}-noarch.patch
 URL:		https://github.com/NVIDIA/eglexternalplatform
-BuildRequires:	rpmbuild(macros) >= 1.446
+BuildRequires:	meson
+BuildRequires:	ninja >= 1.5
+BuildRequires:	rpmbuild(macros) >= 1.736
 Requires:	EGL-devel
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -37,13 +40,17 @@ czy EGL_KHR_platform_gbm.
 
 %prep
 %setup -q
+%patch0 -p1
+
+%build
+%meson build
+
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_includedir}/EGL,%{_npkgconfigdir}}
 
-cp -p interface/*.h $RPM_BUILD_ROOT%{_includedir}/EGL
-cp -p eglexternalplatform.pc $RPM_BUILD_ROOT%{_npkgconfigdir}
+%ninja_install -C build
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -51,6 +58,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc COPYING README.md
-%attr(755,root,root) %{_includedir}/EGL/eglexternalplatform.h
-%attr(755,root,root) %{_includedir}/EGL/eglexternalplatformversion.h
+%attr(755,root,root) %{_includedir}/eglexternalplatform.h
+%attr(755,root,root) %{_includedir}/eglexternalplatformversion.h
 %{_npkgconfigdir}/eglexternalplatform.pc
