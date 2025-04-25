@@ -1,18 +1,17 @@
 Summary:	EGL External Platform Interface
 Summary(pl.UTF-8):	Interfejs EGL External Platform
 Name:		eglexternalplatform
-Version:	1.2
+Version:	1.2.1
 Release:	1
 License:	MIT
 Group:		Development/Libraries
 #Source0Download: https://github.com/NVIDIA/eglexternalplatform/releases
 Source0:	https://github.com/NVIDIA/eglexternalplatform/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	ad353dea7891a494986ff50a7e7f4b87
-Patch0:		%{name}-noarch.patch
+# Source0-md5:	a255995b7926ee185310239e7cac1a1c
 URL:		https://github.com/NVIDIA/eglexternalplatform
 BuildRequires:	meson
 BuildRequires:	ninja >= 1.5
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 Requires:	EGL-devel
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -40,17 +39,16 @@ czy EGL_KHR_platform_gbm.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-%meson build
+%meson
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
